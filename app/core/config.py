@@ -13,16 +13,24 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",
+        case_sensitive=False,
     )
 
     app_name: str = "DreamBigHealth Market Access Intelligence"
     app_env: str = "development"
     debug: bool = True
 
+    # Local development default.
+    # In Streamlit Cloud, set DATABASE_URL in App Settings > Secrets.
     database_url: str = (
         "postgresql+psycopg://market_access:local_dev_password"
         "@localhost:5433/dreambighealth"
     )
+
+    database_connect_timeout_seconds: int = 5
+    database_pool_size: int = 2
+    database_max_overflow: int = 3
+    database_pool_recycle_seconds: int = 1800
 
     raw_data_dir: Path = PROJECT_ROOT / "data" / "raw"
     processed_data_dir: Path = PROJECT_ROOT / "data" / "processed"
@@ -43,7 +51,7 @@ class Settings(BaseSettings):
         "https://www.gov.br/conitec/pt-br/midias/dados-em-excel/"
         "painel_demandas_conitec_20261026.xlsx/@@download/file"
     )
-    
+
     connector_timeout_seconds: int = 120
     connector_batch_size: int = 1000
 

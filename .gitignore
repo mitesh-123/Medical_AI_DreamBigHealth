@@ -42,3 +42,4 @@ logs/
 # Temporary files
 *.tmp
 *.bak
+streamlit_app.py.backup
