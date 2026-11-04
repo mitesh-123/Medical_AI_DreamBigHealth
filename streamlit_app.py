@@ -342,12 +342,10 @@ if page == "Executive Overview":
     ]
 
     if brazil_sources:
-        st.dataframe(
+        st.table(
             source_dataframe(brazil_sources).drop(
                 columns=["Source URL"]
             ),
-            use_container_width=True,
-            hide_index=True,
         )
     else:
         st.info("No Brazil-specific sources were found.")
@@ -368,18 +366,14 @@ if page == "Executive Overview":
                 for row in dataset_stats
             ]
         )
-        st.dataframe(
+        st.table(
             dataset_df,
-            use_container_width=True,
-            hide_index=True,
         )
 
     st.subheader("Recent Connector Activity")
     if runs:
-        st.dataframe(
+        st.table(
             run_dataframe(runs[:10]),
-            use_container_width=True,
-            hide_index=True,
         )
     else:
         st.info("No connector runs recorded yet.")
@@ -453,7 +447,7 @@ elif page == "Pipeline Control":
         "Start pipeline",
         type="primary",
         disabled=not confirm_run,
-        use_container_width=True,
+        
     ):
         progress_bar = st.progress(0.0)
         stage_placeholder = st.empty()
@@ -543,10 +537,10 @@ elif page == "Pipeline Control":
             st.metric("Skipped duplicates / invalid", result["rows_skipped"])
 
             st.write("**Archived file:**")
-            st.code(result["artifact_path"])
+            st.text(result["artifact_path"])
 
             st.write("**SHA-256:**")
-            st.code(result["sha256"])
+            st.text(result["sha256"])
 
         except Exception as exc:
             st.error(f"Pipeline failed: {exc}")
@@ -561,7 +555,7 @@ elif page == "Pipeline Control":
     if last_result:
         st.divider()
         st.subheader("Last Pipeline Result")
-        st.json(last_result)
+        st.text(json.dumps(last_result, indent=2, ensure_ascii=False, default=str))
 
 
 # ---------------------------------------------------------------------
@@ -615,10 +609,8 @@ elif page == "Source Registry":
     st.write(f"Showing **{len(filtered)}** source records.")
 
     if filtered:
-        st.dataframe(
+        st.table(
             source_dataframe(filtered).drop(columns=["Source URL"]),
-            use_container_width=True,
-            hide_index=True,
         )
 
         with st.expander("Inspect source details"):
@@ -672,10 +664,8 @@ elif page == "Connector Runs":
         if selected_status != "All":
             run_df = run_df[run_df["Status"] == selected_status]
 
-        st.dataframe(
+        st.table(
             run_df,
-            use_container_width=True,
-            hide_index=True,
         )
 
         run_ids = [run.id for run in runs]
@@ -698,7 +688,7 @@ elif page == "Connector Runs":
         if selected_run.error_message:
             st.error(selected_run.error_message)
 
-        st.json(selected_run.run_metadata or {})
+        st.text(json.dumps(selected_run.run_metadata or {}, indent=2, ensure_ascii=False, default=str))
 
         if selected_run.artifact_id:
             artifact = next(
@@ -774,10 +764,8 @@ elif page == "Data Explorer":
                 }
             )
 
-        st.dataframe(
+        st.table(
             pd.DataFrame(rows),
-            use_container_width=True,
-            hide_index=True,
         )
 
         with st.expander("Inspect full source record"):
@@ -796,7 +784,7 @@ elif page == "Data Explorer":
             st.write(f"**Record date:** {format_datetime(record.record_date)}")
             st.write(f"**Status:** {record.status}")
             st.write(f"**Last seen:** {format_datetime(record.last_seen_at)}")
-            st.json(record.payload or {})
+            st.text(json.dumps(record.payload or {}, indent=2, ensure_ascii=False, default=str))
     else:
         st.info("No matching records found.")
 
