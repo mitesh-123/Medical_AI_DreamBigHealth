@@ -1,0 +1,32 @@
+
+# API
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.32,<1.0
+
+# Database and migrations
+sqlalchemy>=2.0,<3.0
+psycopg[binary]>=3.2,<4.0
+alembic>=1.14,<2.0
+
+# Configuration and validation
+pydantic>=2.9,<3.0
+pydantic-settings>=2.6,<3.0
+python-dotenv>=1.0,<2.0
+
+# HTTP and connector reliability
+httpx>=0.27,<1.0
+tenacity>=9.0,<10.0
+
+# Data processing
+pandas>=2.2,<3.0
+openpyxl>=3.1,<4.0
+
+# Dashboard
+streamlit>=1.40,<2.0
+
+# Testing
+pytest>=8.3,<9.0
+pytest-cov>=6.0,<7.0
+
+# Code quality
+ruff>=0.8,<1.0
