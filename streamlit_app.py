@@ -2,12 +2,22 @@
 from __future__ import annotations
 
 import json  # noqa: F401
+import os
 from datetime import date, datetime
 from pathlib import Path  # noqa: F401
 from typing import Any
 
 import pandas as pd
 import streamlit as st
+
+try:
+    database_url = st.secrets.get("DATABASE_URL")
+    if database_url:
+        os.environ["DATABASE_URL"] = str(database_url)
+except Exception:
+    # Local development can continue using the project's .env file.
+    pass
+
 from sqlalchemy import Text, cast, func, select
 from sqlalchemy.exc import SQLAlchemyError
 
